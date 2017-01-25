@@ -40,7 +40,7 @@
     "nyc": "^8.3.0",
     "query-dom": "^3.0.7",
     "semistandard-deku": "micnews/semistandard#deku",
-    "snazzy": "^5.0.0",
+    "snazzy": "^6.0.0",
     "tape-catch": "^1.0.4",
     "tape-run": "^2.1.4",
     "tsml": "^1.0.1"
