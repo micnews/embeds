@@ -34,7 +34,7 @@
     "babel-tape-runner": "^2.0.1",
     "babelify": "^7.2.0",
     "brfs": "^1.4.3",
-    "browserify": "^13.0.0",
+    "browserify": "^14.0.0",
     "faucet": "0.0.1",
     "hyperscript": "^1.4.7",
     "nyc": "^8.3.0",
