@@ -15,51 +15,50 @@ const parse = process.browser
 const parseAndRender = input =>
   renderToStaticMarkup(render(parse(input)));
 
-test('parse() + render() facebook - post', t => {
+test('parse() + render() facebook - post', (t) => {
   const input = fixtures.facebookPost;
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
 
-test('parse() + render() facebook - video', t => {
+test('parse() + render() facebook - video', (t) => {
   const input = fixtures.facebookVideo;
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
 
-test('parse() + render() twitter - video', t => {
+test('parse() + render() twitter - video', (t) => {
   const input = fixtures.tweetVideo;
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
 
-test('parse() + render() instagram - with caption', t => {
+test('parse() + render() instagram - with caption', (t) => {
   const input = fixtures.instagramCaption;
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
 
-test('parse() + render() instagram - without caption', t => {
+test('parse() + render() instagram - without caption', (t) => {
   const input = fixtures.instagramWithoutCaption;
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
 
-test('parse() + render() tumblr post', t => {
+test('parse() + render() tumblr post', (t) => {
   const input = fixtures.tumblrPost;
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
 
-test('parse() + render() tidal video', t => {
+test('parse() + render() tidal video', (t) => {
   const input = fixtures.tidalVideo;
-  console.log(input);
   const expected = input;
   const actual = parseAndRender(input);
   t.is(actual, expected);
