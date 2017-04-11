@@ -1,7 +1,23 @@
 /* eslint-disable max-len */
 import tsml from 'tsml'; // eslint-disable-line import/no-extraneous-dependencies
+import { shallow } from 'enzyme';
+import queryDom from 'query-dom';
+
 import test from './tape-wrapper';
-import { parseInput } from '../lib';
+import { render, parse as _parse } from '../lib';
+
+const renderString = jsx => shallow(jsx).html();
+
+const parse = process.browser
+  ? (str) => {
+    const node = document.createElement('div');
+    node.innerHTML = str;
+    return _parse(node.childNodes);
+  }
+  : str => _parse(queryDom(str));
+
+const renderAndParse = input =>
+  parse(renderString(render(input))));
 
 test('parse invalid input', t => {
   t.is(parseInput(), null);
@@ -55,6 +71,10 @@ test('giphy', t => {
   t.deepEqual(parseInput('https://giphy.com/embed/3oxRmeLK7bjcq0CCCA'), expected);
   t.deepEqual(parseInput('http://giphy.com/embed/3oxRmeLK7bjcq0CCCA'), expected);
   t.deepEqual(parseInput('//giphy.com/embed/3oxRmeLK7bjcq0CCCA'), expected);
+  t.deepEqual(parseInput('https://giphy.com/gifs/new-girl-fox-new-girl-newgirl-3oxRmeLK7bjcq0CCCA'), expected);
+  t.deepEqual(parseInput('https://giphy.com/gifs/new-girl-fox-new-girl-newgirl-3oxRmeLK7bjcq0CCCA/'), expected);
+  t.deepEqual(parseInput('http://giphy.com/gifs/new-girl-fox-new-girl-newgirl-3oxRmeLK7bjcq0CCCA'), expected);
+  t.deepEqual(parseInput('//giphy.com/gifs/new-girl-fox-new-girl-newgirl-3oxRmeLK7bjcq0CCCA'), expected);
   t.deepEqual(parseInput(code), expected);
 });
 
@@ -160,6 +180,11 @@ test('facebook', t => {
     expectedVideo
   );
 
+  t.equals(
+    renderAndParse(expectedVideo).url,
+    expectedVideo.url
+  );
+
   t.deepEqual(parseInput(postCode), expectedPost);
   t.deepEqual(
     parseInput('https://www.facebook.com/zuck/posts/10102593740125791'),
@@ -183,7 +208,12 @@ test('facebook', t => {
   );
   t.deepEqual(parseInput('//facebook.com/zuck/posts/10102593740125791'), expectedPost);
 
-  const expectedPhoto = {
+  t.equals(
+    renderAndParse(expectedPost).url,
+    expectedPost.url
+  );
+
+  const expectedPagePhoto = {
     type: 'facebook',
     embedAs: 'photo',
     user: 'rewire.news',
@@ -191,25 +221,55 @@ test('facebook', t => {
     id: '10152515593211738'
   };
 
-  t.deepEqual(parseInput(photoCode), expectedPhoto);
+  t.deepEqual(parseInput(photoCode), expectedPagePhoto);
   t.deepEqual(
     parseInput('https://www.facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
-    expectedPhoto);
+    expectedPagePhoto);
   t.deepEqual(
     parseInput('http://www.facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
-    expectedPhoto);
+    expectedPagePhoto);
   t.deepEqual(
     parseInput('//www.facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
-    expectedPhoto);
+    expectedPagePhoto);
   t.deepEqual(
     parseInput('https://facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
-    expectedPhoto);
+    expectedPagePhoto);
   t.deepEqual(
     parseInput('http://facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
-    expectedPhoto);
+    expectedPagePhoto);
   t.deepEqual(
     parseInput('//facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
+    expectedPagePhoto);
+
+  t.equals(
+    renderAndParse(expectedPagePhoto).url,
+    expectedPagePhoto.url
+  );
+
+  const expectedPhoto = {
+    type: 'facebook',
+    embedAs: 'photo',
+    url: 'https://www.facebook.com/photo.php?fbid=10103183415950711',
+    id: '10103183415950711'
+  };
+
+  t.deepEqual(
+    parseInput('https://www.facebook.com/photo.php?fbid=10103183415950711'),
     expectedPhoto);
+  t.deepEqual(
+    parseInput('http://www.facebook.com/photo.php?fbid=10103183415950711'),
+    expectedPhoto);
+  t.deepEqual(
+    parseInput('//www.facebook.com/photo.php?fbid=10103183415950711'),
+    expectedPhoto);
+  t.deepEqual(
+    parseInput('https://www.facebook.com/photo.php?fbid=10103183415950711&set=pcb.10103183428221121&type=3&theater'),
+    expectedPhoto);
+
+  t.equals(
+    renderAndParse(expectedPhoto).url,
+    expectedPhoto.url
+  );
 });
 
 test('youtube', t => {
@@ -241,6 +301,11 @@ test('youtube', t => {
   t.deepEqual(parseInput('https://youtu.be/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('http://youtu.be/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('//youtu.be/I7IdS-PbEgI'), expected);
+
+  t.equals(
+    renderAndParse(expected).youtubeId,
+    expected.youtubeId
+  );
 });
 
 test('twitter', t => {
@@ -291,6 +356,11 @@ test('twitter', t => {
     parseInput('//www.twitter.com/thomas_kast/status/709353211455541248'),
     expected
   );
+
+  t.equals(
+    renderAndParse(expected).url,
+    expected.url
+  );
 });
 
 test('tumblr', t => {
@@ -323,6 +393,11 @@ test('tumblr', t => {
     parseInput('//embed.tumblr.com/embed/post/Hj-X2tKsXur2oF91XMwT5w/105825530041'),
     expected
   );
+
+  t.equals(
+    renderAndParse(expected).url,
+    expected.url
+  );
 });
 
 test('vine', t => {
@@ -350,6 +425,11 @@ test('vine', t => {
   t.deepEqual(parseInput('//vine.co/v/iHTTDHz6Z2v'), expected);
   t.deepEqual(parseInput('//vine.co/v/iHTTDHz6Z2v/embed'), expected);
   t.deepEqual(parseInput('//vine.co/v/iHTTDHz6Z2v/embed/simple'), expected);
+
+  t.deepEqual(
+    renderAndParse(expected),
+    expected
+  );
 });
 
 test('imgur', t => {
@@ -454,11 +534,14 @@ test('acast', t => {
     type: 'acast',
     channel: 'specialrelationship',
     url: 'https://embed.acast.com/specialrelationship/-1-terrorismandnationalsecurity',
-    name: '-1-terrorismandnationalsecurity'
+    name: '-1-terrorismandnationalsecurity',
+    width: 540,
+    height: 540
   };
 
   t.deepEqual(parseInput(acastCode), expected);
   t.deepEqual(parseInput('https://embed.acast.com/specialrelationship/-1-terrorismandnationalsecurity'), expected);
+  t.deepEqual(parseInput('https://www.acast.com/specialrelationship/-1-terrorismandnationalsecurity'), expected);
 });
 
 test('scribd', t => {
@@ -477,4 +560,30 @@ test('scribd', t => {
 
   t.deepEqual(parseInput(scribdCode), expected);
   t.deepEqual(parseInput('https://www.scribd.com/embeds/320741042/content'), expected);
+});
+
+test('spotify', t => {
+  t.deepEqual(
+    parseInput('https://open.spotify.com/artist/6kBDZFXuLrZgHnvmPu9NsG'),
+    {
+      type: 'spotify',
+      url: 'https://embed.spotify.com/?uri=spotify:artist:6kBDZFXuLrZgHnvmPu9NsG'
+    }
+  );
+
+  t.deepEqual(
+    parseInput('https://open.spotify.com/track/6sEz1Cd0HVXRXuvIw9zAmK'),
+    {
+      type: 'spotify',
+      url: 'https://embed.spotify.com/?uri=spotify:track:6sEz1Cd0HVXRXuvIw9zAmK'
+    }
+  );
+
+  t.deepEqual(
+    parseInput('https://open.spotify.com/user/hamiltonmusical/playlist/4Rf5kHoohcqAS5Qc6gglaX'),
+    {
+      type: 'spotify',
+      url: 'https://embed.spotify.com/?uri=spotify:user:hamiltonmusical:playlist:4Rf5kHoohcqAS5Qc6gglaX'
+    }
+  );
 });

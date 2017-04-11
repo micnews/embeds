@@ -56,3 +56,11 @@ test('parse() + render() tumblr post', t => {
   const actual = parseAndRender(input);
   t.is(actual, expected);
 });
+
+test('parse() + render() tidal video', t => {
+  const input = fixtures.tidalVideo;
+  console.log(input);
+  const expected = input;
+  const actual = parseAndRender(input);
+  t.is(actual, expected);
+});

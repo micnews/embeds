@@ -193,6 +193,13 @@ test('parse() tweet - normal', t => {
   t.deepEqual(actual, expected);
 });
 
+test('parse() tweet - no a tag', t => {
+  const input = `<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">GIF vs. JIF… This </p>&mdash; Matt (foo) Navarra (@MattNavarra)</blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>`;
+  const actual = parse(input);
+  const expected = null;
+  t.deepEqual(actual, expected);
+});
+
 test('parse() tweet - video', t => {
   const input = '<blockquote class="twitter-video" data-lang="en"><p lang="en" dir="ltr">Surfer <a href="https://twitter.com/bethanyhamilton">@bethanyhamilton</a>, who lost her arm in a 2003 shark attack, finishes 3rd in <a href="https://twitter.com/wsl">@wsl</a> Fiji. <a href="https://twitter.com/hashtag/VideoOfTheDay?src=hash">#VideoOfTheDay</a> <a href="https://t.co/elSAwTdP6L">pic.twitter.com/elSAwTdP6L</a></p>&mdash; Twitter Video (@video) <a href="https://twitter.com/video/status/737840608895762432">June 1, 2016</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
   const actual = parse(input);
@@ -272,6 +279,27 @@ test('parse() tweet - no id', t => {
   const input = '<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">GIF vs. JIF… This <a href="https://t.co/qFAHWgdbL6">pic.twitter.com/qFAHWgdbL6</a></p>&mdash; Matt (foo) Navarra (@MattNavarra) </blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
   const actual = parse(input);
   const expected = null;
+  t.deepEqual(actual, expected);
+});
+
+test('parse() tweet - href has query string', t => {
+  const input = `<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">GIF vs. JIF… This <a href="https://t.co/qFAHWgdbL6">pic.twitter.com/qFAHWgdbL6</a></p>&mdash; Matt (foo) Navarra (@MattNavarra) <a href="https://twitter.com/MattNavarra/status/684690494841028608?ref_src=twsrc%5Etfw">January 6, 2016</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>`;
+  const actual = parse(input);
+  const expected = {
+    type: 'twitter',
+    embedAs: 'tweet',
+    text: [
+      {content: 'GIF vs. JIF… This ', href: null},
+      {content: 'pic.twitter.com/qFAHWgdbL6', href: 'https://t.co/qFAHWgdbL6'}
+    ],
+    url: 'https://twitter.com/MattNavarra/status/684690494841028608?ref_src=twsrc%5Etfw',
+    date: 'January 6, 2016',
+    user: {
+      slug: 'MattNavarra',
+      name: 'Matt (foo) Navarra'
+    },
+    id: '684690494841028608'
+  };
   t.deepEqual(actual, expected);
 });
 
@@ -372,6 +400,13 @@ test('parse() facebook - post', t => {
       href: null
     }]
   };
+  t.deepEqual(actual, expected);
+});
+
+test('parse() facebook - post with invalid link', t => {
+  const input = fixtures.facebookPostInvalid;
+  const actual = parse(input);
+  const expected = null;
   t.deepEqual(actual, expected);
 });
 
@@ -545,6 +580,17 @@ test('parse() tumblr embed', t => {
       content: 'http://jencita.tumblr.com/post/147291233392/tswiftdaily-taylor-swift-at-lady-cilento',
       href: 'http://jencita.tumblr.com/post/147291233392/tswiftdaily-taylor-swift-at-lady-cilento'
     }]
+  };
+  t.deepEqual(actual, expected);
+});
+
+test('parse() tidal video', t => {
+  const input = fixtures.tidalVideo;
+  const actual = parse(input);
+  const expected = {
+    type: 'tidal',
+    dataType: 'v',
+    dataId: '63196259'
   };
   t.deepEqual(actual, expected);
 });
