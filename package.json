@@ -41,8 +41,9 @@
     "miclint": "^4.0.0",
     "nyc": "^8.3.0",
     "query-dom": "^3.0.7",
-    "react-addons-test-utils": "^15.5.1",
+    "react-addons-test-utils": "^15.3.0",
     "react-dom": "^15.3.0",
+    "react-test-renderer": "^15.3.0",
     "snazzy": "^5.0.0",
     "tape-catch": "^1.0.4",
     "tape-run": "^2.1.4",
@@ -58,7 +59,6 @@
     "lodash.startswith": "^4.0.0",
     "lodash.values": "^4.1.0",
     "react": "^15.3.0",
-    "react-addons-test-utils": "^15.5.1",
     "virtual-element": "^1.2.0"
   }
 }
