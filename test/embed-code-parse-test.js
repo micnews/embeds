@@ -1,10 +1,12 @@
-import test from './tape-wrapper';
-import {parseInput} from '../lib';
+/* eslint-disable import/no-extraneous-dependencies */
 import tsml from 'tsml';
-import {render, parse as _parse} from '../lib';
-import {renderString, tree} from 'deku';
 import queryDom from 'query-dom';
+import { shallow } from 'enzyme';
 
+import test from './tape-wrapper';
+import { render, parse as _parse, parseInput } from '../lib';
+
+const renderString = jsx => shallow(jsx).html();
 
 const parse = process.browser
   ? (str) => {
@@ -15,21 +17,21 @@ const parse = process.browser
   : str => _parse(queryDom(str));
 
 const renderAndParse = input =>
-  parse(renderString(tree(render(input))));
+  parse(renderString(render(input)));
 
-test('parse invalid input', t => {
+test('parse invalid input', (t) => {
   t.is(parseInput(), null);
   t.is(parseInput(null), null);
   t.is(parseInput(''), null);
   t.is(parseInput('https://unknown.com/embed/ABCde'), null);
 });
 
-test('parse instagram', t => {
+test('parse instagram', (t) => {
   const expected = {
     type: 'instagram',
     text: '',
     url: 'https://www.instagram.com/p/tsxp1hhQTG',
-    id: 'tsxp1hhQTG'
+    id: 'tsxp1hhQTG',
   };
 
   t.deepEqual(parseInput('https://www.instagram.com/p/tsxp1hhQTG'), expected);
@@ -46,16 +48,16 @@ test('parse instagram', t => {
   t.deepEqual(parseInput('//instagram.com/p/tsxp1hhQTG/embed'), expected);
   t.deepEqual(
     parseInput('<iframe src="//instagram.com/p/tsxp1hhQTG"></iframe>'),
-    expected
+    expected,
   );
 });
 
-test('giphy', t => {
+test('giphy', (t) => {
   const expected = {
     type: 'giphy',
     text: '',
     url: 'https://giphy.com/embed/3oxRmeLK7bjcq0CCCA',
-    id: '3oxRmeLK7bjcq0CCCA'
+    id: '3oxRmeLK7bjcq0CCCA',
   };
 
   const code = tsml`
@@ -76,7 +78,7 @@ test('giphy', t => {
   t.deepEqual(parseInput(code), expected);
 });
 
-test('facebook', t => {
+test('facebook', (t) => {
   const videoCode = tsml`
     <div id="fb-root"></div>
     <script>
@@ -141,7 +143,7 @@ test('facebook', t => {
     embedAs: 'video',
     user: 'MicMedia',
     url: 'https://www.facebook.com/MicMedia/videos/1095905927098863',
-    id: '1095905927098863'
+    id: '1095905927098863',
   };
 
   const expectedPost = {
@@ -149,66 +151,66 @@ test('facebook', t => {
     embedAs: 'post',
     user: 'zuck',
     url: 'https://www.facebook.com/zuck/posts/10102593740125791',
-    id: '10102593740125791'
+    id: '10102593740125791',
   };
 
   t.deepEqual(parseInput(videoCode), expectedVideo);
   t.deepEqual(
     parseInput('https://www.facebook.com/MicMedia/videos/1095905927098863'),
-    expectedVideo
+    expectedVideo,
   );
   t.deepEqual(
     parseInput('http://www.facebook.com/MicMedia/videos/1095905927098863'),
-    expectedVideo
+    expectedVideo,
   );
   t.deepEqual(
     parseInput('//www.facebook.com/MicMedia/videos/1095905927098863'),
-    expectedVideo
+    expectedVideo,
   );
   t.deepEqual(
     parseInput('https://facebook.com/MicMedia/videos/1095905927098863'),
-    expectedVideo
+    expectedVideo,
   );
   t.deepEqual(
     parseInput('http://facebook.com/MicMedia/videos/1095905927098863'),
-    expectedVideo
+    expectedVideo,
   );
   t.deepEqual(
     parseInput('//facebook.com/MicMedia/videos/1095905927098863'),
-    expectedVideo
+    expectedVideo,
   );
 
   t.equals(
     renderAndParse(expectedVideo).url,
-    expectedVideo.url
+    expectedVideo.url,
   );
 
   t.deepEqual(parseInput(postCode), expectedPost);
   t.deepEqual(
     parseInput('https://www.facebook.com/zuck/posts/10102593740125791'),
-    expectedPost
+    expectedPost,
   );
   t.deepEqual(
     parseInput('http://www.facebook.com/zuck/posts/10102593740125791'),
-    expectedPost
+    expectedPost,
   );
   t.deepEqual(
     parseInput('//www.facebook.com/zuck/posts/10102593740125791'),
-    expectedPost
+    expectedPost,
   );
   t.deepEqual(
     parseInput('https://facebook.com/zuck/posts/10102593740125791'),
-    expectedPost
+    expectedPost,
   );
   t.deepEqual(
     parseInput('http://facebook.com/zuck/posts/10102593740125791'),
-    expectedPost
+    expectedPost,
   );
   t.deepEqual(parseInput('//facebook.com/zuck/posts/10102593740125791'), expectedPost);
 
   t.equals(
     renderAndParse(expectedPost).url,
-    expectedPost.url
+    expectedPost.url,
   );
 
   const expectedPagePhoto = {
@@ -216,7 +218,7 @@ test('facebook', t => {
     embedAs: 'photo',
     user: 'rewire.news',
     url: 'https://www.facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738',
-    id: '10152515593211738'
+    id: '10152515593211738',
   };
 
   t.deepEqual(parseInput(photoCode), expectedPagePhoto);
@@ -241,14 +243,14 @@ test('facebook', t => {
 
   t.equals(
     renderAndParse(expectedPagePhoto).url,
-    expectedPagePhoto.url
+    expectedPagePhoto.url,
   );
 
   const expectedPhoto = {
     type: 'facebook',
     embedAs: 'photo',
     url: 'https://www.facebook.com/photo.php?fbid=10103183415950711',
-    id: '10103183415950711'
+    id: '10103183415950711',
   };
 
   t.deepEqual(
@@ -266,11 +268,11 @@ test('facebook', t => {
 
   t.equals(
     renderAndParse(expectedPhoto).url,
-    expectedPhoto.url
+    expectedPhoto.url,
   );
 });
 
-test('youtube', t => {
+test('youtube', (t) => {
   const youtubeCode = tsml`<iframe
     width="560"
     height="315"
@@ -280,7 +282,7 @@ test('youtube', t => {
   const expected = {
     type: 'youtube',
     youtubeId: 'I7IdS-PbEgI',
-    url: 'https://www.youtube.com/embed/I7IdS-PbEgI'
+    url: 'https://www.youtube.com/embed/I7IdS-PbEgI',
   };
 
   t.deepEqual(parseInput(youtubeCode), expected);
@@ -302,11 +304,11 @@ test('youtube', t => {
 
   t.equals(
     renderAndParse(expected).youtubeId,
-    expected.youtubeId
+    expected.youtubeId,
   );
 });
 
-test('twitter', t => {
+test('twitter', (t) => {
   const twitterCode = tsml`
     <blockquote class="twitter-tweet" data-lang="en">
       <p lang="en" dir="ltr">High above <a href="
@@ -326,42 +328,42 @@ test('twitter', t => {
     type: 'twitter',
     url: 'https://twitter.com/thomas_kast/status/709353211455541248',
     user: 'thomas_kast',
-    id: '709353211455541248'
+    id: '709353211455541248',
   };
 
   t.deepEqual(parseInput(twitterCode), expected);
   t.deepEqual(
     parseInput('https://twitter.com/thomas_kast/status/709353211455541248'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('http://twitter.com/thomas_kast/status/709353211455541248'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('//twitter.com/thomas_kast/status/709353211455541248'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('https://www.twitter.com/thomas_kast/status/709353211455541248'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('http://www.twitter.com/thomas_kast/status/709353211455541248'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('//www.twitter.com/thomas_kast/status/709353211455541248'),
-    expected
+    expected,
   );
 
   t.equals(
     renderAndParse(expected).url,
-    expected.url
+    expected.url,
   );
 });
 
-test('tumblr', t => {
+test('tumblr', (t) => {
   const tumblrCode = tsml`
     <div class="tumblr-post"
       data-href="https://embed.tumblr.com/embed/post/Hj-X2tKsXur2oF91XMwT5w/105825530041"
@@ -375,30 +377,30 @@ test('tumblr', t => {
   const expected = {
     type: 'tumblr',
     url: 'https://embed.tumblr.com/embed/post/Hj-X2tKsXur2oF91XMwT5w/105825530041',
-    id: '105825530041'
+    id: '105825530041',
   };
 
   t.deepEqual(parseInput(tumblrCode), expected);
   t.deepEqual(
     parseInput('https://embed.tumblr.com/embed/post/Hj-X2tKsXur2oF91XMwT5w/105825530041'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('http://embed.tumblr.com/embed/post/Hj-X2tKsXur2oF91XMwT5w/105825530041'),
-    expected
+    expected,
   );
   t.deepEqual(
     parseInput('//embed.tumblr.com/embed/post/Hj-X2tKsXur2oF91XMwT5w/105825530041'),
-    expected
+    expected,
   );
 
   t.equals(
     renderAndParse(expected).url,
-    expected.url
+    expected.url,
   );
 });
 
-test('vine', t => {
+test('vine', (t) => {
   const vineCode = tsml`
     <iframe src="https://vine.co/v/iHTTDHz6Z2v/embed/simple"
       width="600"
@@ -410,7 +412,7 @@ test('vine', t => {
   const expected = {
     type: 'vine',
     url: 'https://vine.co/v/iHTTDHz6Z2v/embed/simple',
-    id: 'iHTTDHz6Z2v'
+    id: 'iHTTDHz6Z2v',
   };
 
   t.deepEqual(parseInput(vineCode), expected);
@@ -426,11 +428,11 @@ test('vine', t => {
 
   t.deepEqual(
     renderAndParse(expected),
-    expected
+    expected,
   );
 });
 
-test('imgur', t => {
+test('imgur', (t) => {
   const imgurCode = tsml`
     <blockquote class="imgur-embed-pub" lang="en" data-id="2GuAESk">
       <a href="//imgur.com/2GuAESk"> If this gets to front page I will draw a ton of imgur doodles for you guys</a>
@@ -440,7 +442,7 @@ test('imgur', t => {
   const expected = {
     type: 'imgur',
     url: 'https://imgur.com/2GuAESk',
-    id: '2GuAESk'
+    id: '2GuAESk',
   };
 
   t.deepEqual(parseInput(imgurCode), expected);
@@ -455,7 +457,7 @@ test('imgur', t => {
   t.deepEqual(parseInput('//imgur.com/2GuAESk/embed'), expected);
 });
 
-test('vimeo', t => {
+test('vimeo', (t) => {
   const vimeoCode = tsml`
     <iframe src="https://player.vimeo.com/video/35630244?color=ff002f"
       width="500"
@@ -469,7 +471,7 @@ test('vimeo', t => {
   const expected = {
     type: 'vimeo',
     url: 'https://player.vimeo.com/video/35630244',
-    id: '35630244'
+    id: '35630244',
   };
 
   t.deepEqual(parseInput(vimeoCode), expected);
@@ -481,11 +483,11 @@ test('vimeo', t => {
   t.deepEqual(parseInput('//vimeo.com/35630244'), expected);
 });
 
-test('graphiq', t => {
+test('graphiq', (t) => {
   const expected = {
     type: 'graphiq',
     url: 'https://w.graphiq.com/w/2iub6zz6ltH',
-    id: '2iub6zz6ltH'
+    id: '2iub6zz6ltH',
   };
 
   t.deepEqual(parseInput('https://graphiq.com/wlp/2iub6zz6ltH'), expected);
@@ -499,30 +501,30 @@ test('graphiq', t => {
   t.deepEqual(parseInput('//w.graphiq.com/w/2iub6zz6ltH'), expected);
 });
 
-test('facebook allow periods in username', t => {
+test('facebook allow periods in username', (t) => {
   const expected = {
     type: 'facebook',
     embedAs: 'video',
     user: 'rick.morty',
     url: 'https://www.facebook.com/rick.morty/videos/1337',
-    id: '1337'
+    id: '1337',
   };
   const actual = parseInput('https://www.facebook.com/rick.morty/videos/1337');
   t.deepEqual(expected, actual);
 });
 
-test('twitter allow periods in username', t => {
+test('twitter allow periods in username', (t) => {
   const expected = {
     type: 'twitter',
     url: 'https://twitter.com/rick.morty/status/42',
     user: 'rick.morty',
-    id: '42'
+    id: '42',
   };
   const actual = parseInput('https://twitter.com/rick.morty/status/42');
   t.deepEqual(expected, actual);
 });
 
-test('acast', t => {
+test('acast', (t) => {
   const acastCode = tsml`
     <iframe width="540" height="540"
     src="https://embed.acast.com/specialrelationship/-1-terrorismandnationalsecurity"
@@ -534,7 +536,7 @@ test('acast', t => {
     url: 'https://embed.acast.com/specialrelationship/-1-terrorismandnationalsecurity',
     name: '-1-terrorismandnationalsecurity',
     width: 540,
-    height: 540
+    height: 540,
   };
 
   t.deepEqual(parseInput(acastCode), expected);
@@ -542,7 +544,7 @@ test('acast', t => {
   t.deepEqual(parseInput('https://www.acast.com/specialrelationship/-1-terrorismandnationalsecurity'), expected);
 });
 
-test('scribd', t => {
+test('scribd', (t) => {
   const scribdCode = tsml`
     <iframe class="scribd_iframe_embed"
     src="https://www.scribd.com/embeds/320741042/content?start_page=1&view_mode=scroll&access_key=key-1mpoU4LMiQy0sf1mx8pe&show_recommendations=false"
@@ -553,35 +555,35 @@ test('scribd', t => {
   const expected = {
     type: 'scribd',
     id: '320741042',
-    url: 'https://www.scribd.com/embeds/320741042/content'
+    url: 'https://www.scribd.com/embeds/320741042/content',
   };
 
   t.deepEqual(parseInput(scribdCode), expected);
   t.deepEqual(parseInput('https://www.scribd.com/embeds/320741042/content'), expected);
 });
 
-test('spotify', t => {
+test('spotify', (t) => {
   t.deepEqual(
     parseInput('https://open.spotify.com/artist/6kBDZFXuLrZgHnvmPu9NsG'),
     {
       type: 'spotify',
-      url: 'https://embed.spotify.com/?uri=spotify:artist:6kBDZFXuLrZgHnvmPu9NsG'
-    }
+      url: 'https://embed.spotify.com/?uri=spotify:artist:6kBDZFXuLrZgHnvmPu9NsG',
+    },
   );
 
   t.deepEqual(
     parseInput('https://open.spotify.com/track/6sEz1Cd0HVXRXuvIw9zAmK'),
     {
       type: 'spotify',
-      url: 'https://embed.spotify.com/?uri=spotify:track:6sEz1Cd0HVXRXuvIw9zAmK'
-    }
+      url: 'https://embed.spotify.com/?uri=spotify:track:6sEz1Cd0HVXRXuvIw9zAmK',
+    },
   );
 
   t.deepEqual(
     parseInput('https://open.spotify.com/user/hamiltonmusical/playlist/4Rf5kHoohcqAS5Qc6gglaX'),
     {
       type: 'spotify',
-      url: 'https://embed.spotify.com/?uri=spotify:user:hamiltonmusical:playlist:4Rf5kHoohcqAS5Qc6gglaX'
-    }
+      url: 'https://embed.spotify.com/?uri=spotify:user:hamiltonmusical:playlist:4Rf5kHoohcqAS5Qc6gglaX',
+    },
   );
 });
