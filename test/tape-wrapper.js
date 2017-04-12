@@ -1,4 +1,6 @@
-import test from 'tape-catch'; // eslint-disable-line
+/* eslint-disable import/no-extraneous-dependencies */
+
+import test from 'tape-catch';
 
 export default (msg, cb) => {
   test(msg, (t) => {

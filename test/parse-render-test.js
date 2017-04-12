@@ -1,5 +1,7 @@
-import { renderToStaticMarkup } from 'react-dom/server'; // eslint-disable-line
-import queryDom from 'query-dom'; // eslint-disable-line
+/* eslint-disable import/no-extraneous-dependencies */
+
+import { renderToStaticMarkup } from 'react-dom/server';
+import queryDom from 'query-dom';
 import test from './tape-wrapper';
 import fixtures from './fixtures';
 import { render, parse as _parse } from '../lib';

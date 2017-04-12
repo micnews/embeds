@@ -1,5 +1,7 @@
-import { renderToStaticMarkup } from 'react-dom/server'; // eslint-disable-line
-import tsml from 'tsml'; // eslint-disable-line
+/* eslint-disable import/no-extraneous-dependencies */
+
+import { renderToStaticMarkup } from 'react-dom/server';
+import tsml from 'tsml';
 import test from './tape-wrapper';
 import { render as _render } from '../lib';
 import fixtures from './fixtures';

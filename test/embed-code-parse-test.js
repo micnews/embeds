@@ -1,6 +1,6 @@
-/* eslint-disable max-len */
-import tsml from 'tsml'; // eslint-disable-line import/no-extraneous-dependencies
-import queryDom from 'query-dom'; // eslint-disable-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
+import tsml from 'tsml';
+import queryDom from 'query-dom';
 import { shallow } from 'enzyme';
 
 import test from './tape-wrapper';
