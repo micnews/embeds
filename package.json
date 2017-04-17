@@ -37,7 +37,7 @@
     "browserify": "^13.0.0",
     "devtool": "^2.3.1",
     "faucet": "0.0.1",
-    "hyperscript": "^1.4.7",
+    "hyperscript": "^2.0.2",
     "nyc": "^8.3.0",
     "query-dom": "^3.0.7",
     "semistandard-deku": "micnews/semistandard#deku",
