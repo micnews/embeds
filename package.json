@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "semistandard | snazzy",
     "test:node": "nyc babel-tape-runner test/*-test.js",
-    "test:browser": "browserify -t babelify -t brfs -d test/*-test.js | tape-run | faucet",
+    "test:browser": "browserify -t babelify -t brfs -d test/*-test.js | devtool -c -h --bf --no-nt | faucet",
     "test": "npm run test:node && npm run test:browser && npm run lint",
     "build": "rm -rf dist && mkdir -p dist && babel lib --out-dir dist",
     "watch": "rm -rf dist && mkdir -p dist && babel lib --out-dir dist --watch",
@@ -35,14 +35,14 @@
     "babelify": "^7.2.0",
     "brfs": "^1.4.3",
     "browserify": "^13.0.0",
+    "devtool": "^2.3.1",
     "faucet": "0.0.1",
     "hyperscript": "^1.4.7",
     "nyc": "^8.3.0",
     "query-dom": "^3.0.7",
     "semistandard-deku": "micnews/semistandard#deku",
     "snazzy": "^5.0.0",
-    "tape-catch": "^1.0.4",
-    "tape-run": "^2.1.4",
+    "tape-catch": "^1.0.6",
     "tsml": "^1.0.1"
   },
   "dependencies": {
