@@ -558,6 +558,22 @@ test('scribd', t => {
 
   t.deepEqual(parseInput(scribdCode), expected);
   t.deepEqual(parseInput('https://www.scribd.com/embeds/320741042/content'), expected);
+
+  const scribdCodeDocument = tsml`
+    <iframe class="scribd_iframe_embed"
+    src="https://www.scribd.com/document/320741042/Mike-Crapo-Missing-Poster-2-10-2017?start_page=1&view_mode=scroll&access_key=key-1mpoU4LMiQy0sf1mx8pe&show_recommendations=false"
+    data-auto-height="false"
+    data-aspect-ratio="0.7729220222793488"
+    scrolling="no" id="doc_61832" width="600" height="800" frameborder="0"></iframe>`;
+
+  const expectedDocument = {
+    type: 'scribd',
+    id: '320741042',
+    url: 'https://www.scribd.com/embeds/320741042/content'
+  };
+
+  t.deepEqual(parseInput(scribdCode), expectedDocument);
+  t.deepEqual(parseInput('https://www.scribd.com/document/320741042/Mike-Crapo-Missing-Poster-2-10-2017'), expected);
 });
 
 test('spotify', t => {
