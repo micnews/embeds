@@ -178,7 +178,7 @@ test('facebook', t => {
     expectedVideo
   );
 
-  t.equals(
+  t.is(
     renderAndParse(expectedVideo).url,
     expectedVideo.url
   );
@@ -206,7 +206,7 @@ test('facebook', t => {
   );
   t.deepEqual(parseInput('//facebook.com/zuck/posts/10102593740125791'), expectedPost);
 
-  t.equals(
+  t.is(
     renderAndParse(expectedPost).url,
     expectedPost.url
   );
@@ -239,7 +239,7 @@ test('facebook', t => {
     parseInput('//facebook.com/rewire.news/photos/a.102749171737.90216.9432926737/10152515593211738'),
     expectedPagePhoto);
 
-  t.equals(
+  t.is(
     renderAndParse(expectedPagePhoto).url,
     expectedPagePhoto.url
   );
@@ -264,7 +264,7 @@ test('facebook', t => {
     parseInput('https://www.facebook.com/photo.php?fbid=10103183415950711&set=pcb.10103183428221121&type=3&theater'),
     expectedPhoto);
 
-  t.equals(
+  t.is(
     renderAndParse(expectedPhoto).url,
     expectedPhoto.url
   );
@@ -300,7 +300,7 @@ test('youtube', t => {
   t.deepEqual(parseInput('http://youtu.be/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('//youtu.be/I7IdS-PbEgI'), expected);
 
-  t.equals(
+  t.is(
     renderAndParse(expected).youtubeId,
     expected.youtubeId
   );
@@ -355,7 +355,7 @@ test('twitter', t => {
     expected
   );
 
-  t.equals(
+  t.is(
     renderAndParse(expected).url,
     expected.url
   );
@@ -392,7 +392,7 @@ test('tumblr', t => {
     expected
   );
 
-  t.equals(
+  t.is(
     renderAndParse(expected).url,
     expected.url
   );
@@ -572,7 +572,7 @@ test('scribd', t => {
     url: 'https://www.scribd.com/embeds/320741042/content'
   };
 
-  t.deepEqual(parseInput(scribdCode), expectedDocument);
+  t.deepEqual(parseInput(scribdCodeDocument), expectedDocument);
   t.deepEqual(parseInput('https://www.scribd.com/document/320741042/Mike-Crapo-Missing-Poster-2-10-2017'), expected);
 });
 
