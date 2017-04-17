@@ -1,7 +1,12 @@
-import test from 'tapava';
+import test from 'tape-catch';
 
 if (process.browser) {
   test.onFinish(global.close);
 }
 
-export default test;
+export default (msg, cb) => {
+  test(msg, (t) => {
+    cb(t);
+    t.end();
+  });
+};

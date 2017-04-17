@@ -1,7 +1,7 @@
 import test from './tape-wrapper';
 
 test('hyperscript + embeds compability', t => {
-  t.notThrows(function () {
+  t.doesNotThrow(function () {
     require('hyperscript');
     require('./../lib');
   });

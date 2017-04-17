@@ -42,7 +42,7 @@
     "query-dom": "^3.0.7",
     "semistandard-deku": "micnews/semistandard#deku",
     "snazzy": "^5.0.0",
-    "tapava": "^2.3.0",
+    "tape-catch": "^1.0.6",
     "tsml": "^1.0.1"
   },
   "dependencies": {
