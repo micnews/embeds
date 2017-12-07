@@ -7,6 +7,8 @@ export default {
   facebookPost: fs.readFileSync(`${__dirname}/facebook-post.html`, 'utf8').trim(),
   facebookPostInvalid: fs.readFileSync(`${__dirname}/facebook-post-invalid.html`, 'utf8').trim(),
   facebookVideo: fs.readFileSync(`${__dirname}/facebook-video.html`, 'utf8').trim(),
+  facebookVideoInvalid: fs.readFileSync(`${__dirname}/facebook-video-invalid.html`, 'utf8').trim(),
+  facebookVideoInvalid2: fs.readFileSync(`${__dirname}/facebook-video-invalid-2.html`, 'utf8').trim(),
   facebookPhoto: fs.readFileSync(`${__dirname}/facebook-photo.html`, 'utf8').trim(),
   facebookEmbedCode: fs.readFileSync(`${__dirname}/facebook-embed-code.html`, 'utf8').trim(),
   tweetNoUser: fs.readFileSync(`${__dirname}/tweet-no-user.html`, 'utf8').trim(),

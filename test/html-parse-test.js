@@ -506,6 +506,42 @@ test('parse() facebook - video with embed code', t => {
   t.deepEqual(actual, expected);
 });
 
+test('parse() facebook - video invalid', t => {
+  const input = fixtures.facebookVideoInvalid;
+  const actual = parse(input);
+  const expected = {
+    embedAs: 'video',
+    type: 'facebook',
+    url: 'https://www.facebook.com/MicMedia/videos/1060315987324524/',
+    headline: '',
+    date: '',
+    user: {
+      url: '',
+      name: ''
+    },
+    text: []
+  };
+  t.deepEqual(actual, expected);
+});
+
+test('parse() facebook - video invalid 2', t => {
+  const input = fixtures.facebookVideoInvalid2;
+  const actual = parse(input);
+  const expected = {
+    embedAs: 'video',
+    type: 'facebook',
+    url: 'https://www.facebook.com/MicMedia/videos/1060315987324524/',
+    headline: '',
+    date: '1',
+    user: {
+      url: '',
+      name: ''
+    },
+    text: []
+  };
+  t.deepEqual(actual, expected);
+});
+
 test('parse() vine', t => {
   const input = '<iframe src="https://vine.co/v/bjHh0zHdgZT/embed/simple" width="600" height="600" frameborder="0"></iframe><script src="https://platform.vine.co/static/scripts/embed.js"></script>';
   const actual = parse(input);
