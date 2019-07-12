@@ -286,6 +286,8 @@ test('youtube', t => {
   t.deepEqual(parseInput(youtubeCode), expected);
   t.deepEqual(parseInput('https://www.youtube.com/embed/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('http://www.youtube.com/embed/I7IdS-PbEgI'), expected);
+  t.deepEqual(parseInput('https://www.youtube.com/watch/I7IdS-PbEgI'), expected);
+  t.deepEqual(parseInput('http://www.youtube.com/watch/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('//www.youtube.com/embed/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('https://youtube.com/embed/I7IdS-PbEgI'), expected);
   t.deepEqual(parseInput('http://youtube.com/embed/I7IdS-PbEgI'), expected);
